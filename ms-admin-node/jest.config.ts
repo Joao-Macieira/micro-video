@@ -6,7 +6,10 @@ const config: Config = {
   rootDir: './src',
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
-  }
+  },
+  setupFilesAfterEnv: [
+    './shared/infra/testing/expect-helpers.ts'
+  ]
 };
 
 export default config;
