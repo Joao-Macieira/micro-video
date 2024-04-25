@@ -60,7 +60,7 @@ export abstract class InMemorySearchableRepository<
   EntityId,
   Filter
 > {
-  sortabledFields: string[] = [];
+  sortableFields: string[] = [];
 
   async search(props: SearchParams<Filter>): Promise<SearchResult<E>> {
     const itemsFiltered = await this.applyFilter(this.items, props.filter);
@@ -81,9 +81,9 @@ export abstract class InMemorySearchableRepository<
     items: E[],
     sort: string | null,
     sort_dir: SortDirection | null,
-    custom_getter?: (sort: string, item: E) => any
+    custom_getter?: (sort: string, item: E) => any,
   ) {
-    if (!sort || !this.sortabledFields.includes(sort)) {
+    if (!sort || !this.sortableFields.includes(sort)) {
       return items;
     }
 
@@ -100,7 +100,7 @@ export abstract class InMemorySearchableRepository<
       }
 
       return 0;
-    })
+    });
   }
 
   protected applyPaginate(
