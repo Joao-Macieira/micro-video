@@ -19,7 +19,7 @@ describe('Uuid Unit tests', () => {
   });
 
   test('should accept a valid Uuid', () => {
-    const validUuid = '550e8400-e29b-41d4-a716-446655440000'
+    const validUuid = '550e8400-e29b-41d4-a716-446655440000' //uuid
     const uuid = new Uuid(validUuid);
     expect(uuid.id).toBe(validUuid);
     expect(uuidValidate(uuid.id)).toBeTruthy();
