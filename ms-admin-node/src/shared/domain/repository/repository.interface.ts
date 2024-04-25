@@ -2,7 +2,7 @@ import { Entity } from "../entity";
 import { ValueObject } from "../value-object";
 
 export interface IRepository<E extends Entity, EntityId extends ValueObject> {
-  findById(entityId: EntityId): Promise<E>;
+  findById(entityId: EntityId): Promise<E | null>;
   findAll(): Promise<E[]>;
   insert(entity: E): Promise<void>;
   bulkInsert(entities: E[]): Promise<void>;
