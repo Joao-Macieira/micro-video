@@ -24,7 +24,7 @@ export class SearchResult<E extends Entity = Entity> extends ValueObject {
     this.last_page = Math.ceil(this.total / this.per_page);
   }
 
-  toJSON(forceEntity: false) {
+  toJSON(forceEntity = false) {
     return {
       items: forceEntity
         ? this.items.map((item) => item.toJSON())
