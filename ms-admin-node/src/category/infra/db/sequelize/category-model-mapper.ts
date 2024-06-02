@@ -4,7 +4,6 @@ import { CategoryModel } from "./category.model";
 
 export class CategoryModelMapper {
   static toModel(entity: Category): CategoryModel {
-    console.log({ entity });
     return CategoryModel.build({
       category_id: entity.categoryId.id,
       name: entity.name,
