@@ -13,13 +13,15 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   async findById(entityId: Uuid): Promise<Category | null> {
     const model = await this._get(entityId.id);
 
-    return new Category({
-      categoryId: new Uuid(model.category_id),
-      name: model.name,
-      description: model.description,
-      isActive: model.is_active,
-      createdAt: model.created_at,
-    })
+    return model ?
+      new Category({
+        categoryId: new Uuid(model.category_id),
+        name: model.name,
+        description: model.description,
+        isActive: model.is_active,
+        createdAt: model.created_at,
+      }) :
+      null;
   }
 
   async findAll(): Promise<Category[]> {
