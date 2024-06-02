@@ -1,0 +1,74 @@
+import { Sequelize } from "sequelize-typescript";
+import { EntityValidationError } from "../../../../../shared/domain/validators/validation.error";
+import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
+import { Category } from "../../../../domain/category.entity";
+import { CategoryModelMapper } from "../category-model-mapper";
+import { CategoryModel } from "../category.model";
+
+describe('CategoryModelMapper Integration Tests', () => {
+  let sequelize: Sequelize;
+
+  beforeEach(async () => {
+    sequelize = new Sequelize({
+      dialect: 'sqlite',
+      storage: ':memory:',
+      models: [CategoryModel]
+    });
+
+    await sequelize.sync({ force: true });
+  });
+
+  it('should throws error when category is invalid', () => {
+    expect.assertions(2);
+
+    const model = CategoryModel.build({
+      category_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
+      name: 'a'.repeat(256),
+    });
+    try {
+      CategoryModelMapper.toEntity(model);
+      fail(
+        'The category is valid, but it needs throws a EntityValidationError',
+      );
+    } catch (e) {
+      expect(e).toBeInstanceOf(EntityValidationError);
+      expect((e as EntityValidationError).errors).toMatchObject({
+          name: ['name must be shorter than or equal to 255 characters'],
+        },
+      );
+    }
+  });
+
+  it('should convert a category model to a category entity', () => {
+    const createdAt = new Date();
+    const model = CategoryModel.build({
+      category_id: '5490020a-e866-4229-9adc-aa44b83234c4',
+      name: 'some value',
+      description: 'some description',
+      is_active: true,
+      created_at: createdAt,
+    });
+    const aggregate = CategoryModelMapper.toEntity(model);
+    expect(aggregate.toJSON()).toStrictEqual(
+      new Category({
+        categoryId: new Uuid('5490020a-e866-4229-9adc-aa44b83234c4'),
+        name: 'some value',
+        description: 'some description',
+        isActive: true,
+        createdAt,
+      }).toJSON(),
+    );
+  });
+
+  it('should convert a category entoty to a category model', () => {
+    const category = Category.fake().aCategory().build();
+    const model = CategoryModelMapper.toModel(category);
+    expect(model.toJSON()).toStrictEqual({
+      category_id: category.categoryId.id,
+      name: category.name,
+      description: category.description,
+      is_active: category.isActive,
+      created_at: category.createdAt,
+    });
+  });
+});

@@ -4,6 +4,7 @@ import { NotFoundError } from "../../../../../shared/domain/errors/not-found.err
 import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../../../../domain/category.entity";
 import { CategorySearchParams, CategorySearchResult } from "../../../../domain/category.repository";
+import { CategoryModelMapper } from "../category-model-mapper";
 import { CategorySequelizeRepository } from "../category-sequelize.repository";
 import { CategoryModel } from "../category.model";
 
@@ -142,11 +143,11 @@ describe('CategorySequelizeRepository Integration specs', () => {
         .withCreatedAt(created_at)
         .build();
       await repository.bulkInsert(categories);
-      // const spyToEntity = jest.spyOn(CategoryModelMapper, 'toEntity');
+      const spyToEntity = jest.spyOn(CategoryModelMapper, 'toEntity');
 
       const searchOutput = await repository.search(new CategorySearchParams());
       expect(searchOutput).toBeInstanceOf(CategorySearchResult);
-      // expect(spyToEntity).toHaveBeenCalledTimes(15);
+      expect(spyToEntity).toHaveBeenCalledTimes(15);
       expect(searchOutput.toJSON()).toMatchObject({
         total: 16,
         current_page: 1,
