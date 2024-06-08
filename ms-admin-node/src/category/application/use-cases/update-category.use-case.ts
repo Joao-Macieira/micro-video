@@ -3,6 +3,7 @@ import { NotFoundError } from "../../../shared/domain/errors/not-found.error";
 import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../../domain/category.entity";
 import { ICategoryRepository } from "../../domain/category.repository";
+import { CategoryOutput, CategoryOutputMapper } from "./common/category-output";
 
 
 type UpdateCategoryInput = {
@@ -12,18 +13,10 @@ type UpdateCategoryInput = {
   isActive?: boolean;
 };
 
-type UpdateCategoryOutput = {
-  id: string;
-  name: string;
-  description: string;
-  isActive: boolean;
-  createdAt: Date;
-};
-
-export class UpdateCategoryuseCase implements IUseCase<UpdateCategoryInput, UpdateCategoryOutput> {
+export class UpdateCategoryuseCase implements IUseCase<UpdateCategoryInput, CategoryOutput> {
   constructor(private readonly categoryRepository: ICategoryRepository) {}
 
-  async execute(input: UpdateCategoryInput): Promise<UpdateCategoryOutput> {
+  async execute(input: UpdateCategoryInput): Promise<CategoryOutput> {
     const uuid = new Uuid(input.id);
     const category = await this.categoryRepository.findById(uuid);
 
@@ -47,12 +40,6 @@ export class UpdateCategoryuseCase implements IUseCase<UpdateCategoryInput, Upda
 
     await this.categoryRepository.update(category);
 
-    return {
-      id: category.categoryId.id,
-      name: category.name,
-      description: category.description,
-      isActive: category.isActive,
-      createdAt: category.createdAt
-    }
+    return CategoryOutputMapper.toOutput(category);
   }
 }
