@@ -3,7 +3,7 @@ import { FieldsErrors } from "./shared/domain/validators/validator-fields.interf
 declare global {
   namespace jest {
     interface Matchers<R> {
-      containsErrorMessage: (expected: FieldsErrors) => R;
+      notificationContainsErrorMessages: (expected: Array<FieldsErrors>) => R;
     }
   }
 }
