@@ -1,8 +1,8 @@
-import { Entity } from "../../shared/domain/entity";
-import { ValueObject } from "../../shared/domain/value-object";
-import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
-import { CategoryFakeBuilder } from "./category-fake.builder";
-import { CategoryValidatorFactory } from "./category.validator";
+import { Entity } from '../../shared/domain/entity';
+import { ValueObject } from '../../shared/domain/value-object';
+import { Uuid } from '../../shared/domain/value-objects/uuid.vo';
+import { CategoryFakeBuilder } from './category-fake.builder';
+import { CategoryValidatorFactory } from './category.validator';
 
 export type CategoryConstructorProps = {
   categoryId?: Uuid;
@@ -10,13 +10,13 @@ export type CategoryConstructorProps = {
   description?: string | null;
   isActive?: boolean;
   createdAt?: Date;
-}
+};
 
 export type CategoryCreateCommand = {
   name: string;
   description?: string | null;
   isActive?: boolean;
-}
+};
 
 export class Category extends Entity {
   categoryId: Uuid;
@@ -77,6 +77,6 @@ export class Category extends Entity {
       description: this.description,
       isActive: this.isActive,
       createdAt: this.createdAt,
-    }
+    };
   }
 }

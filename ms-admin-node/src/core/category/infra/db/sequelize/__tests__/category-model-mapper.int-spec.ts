@@ -1,4 +1,3 @@
-
 import { EntityValidationError } from '../../../../../shared/domain/validators/validation.error';
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
@@ -14,8 +13,8 @@ describe('CategoryModelMapper Integration Tests', () => {
     expect.assertions(2);
     const model = CategoryModel.build({
       category_id: '9366b7dc-2d71-4799-b91c-c64adb205104',
-      name: 'a'.repeat(256)
-    });
+      name: 'a'.repeat(256),
+    } as any);
     try {
       CategoryModelMapper.toEntity(model);
       fail(

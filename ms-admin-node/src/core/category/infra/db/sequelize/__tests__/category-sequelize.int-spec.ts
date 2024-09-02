@@ -1,12 +1,14 @@
-
-import { NotFoundError } from "../../../../../shared/domain/errors/not-found.error";
-import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
-import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
-import { Category } from "../../../../domain/category.entity";
-import { CategorySearchParams, CategorySearchResult } from "../../../../domain/category.repository";
-import { CategoryModelMapper } from "../category-model-mapper";
-import { CategorySequelizeRepository } from "../category-sequelize.repository";
-import { CategoryModel } from "../category.model";
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Category } from '../../../../domain/category.entity';
+import {
+  CategorySearchParams,
+  CategorySearchResult,
+} from '../../../../domain/category.repository';
+import { CategoryModelMapper } from '../category-model-mapper';
+import { CategorySequelizeRepository } from '../category-sequelize.repository';
+import { CategoryModel } from '../category.model';
 
 describe('CategorySequelizeRepository Integration specs', () => {
   setupSequelize({ models: [CategoryModel] });
@@ -32,7 +34,7 @@ describe('CategorySequelizeRepository Integration specs', () => {
 
     entityFound = await repository.findById(category.categoryId);
 
-    expect(entityFound.toJSON()).toMatchObject(category.toJSON());
+    expect(entityFound?.toJSON()).toMatchObject(category.toJSON());
   });
 
   it('should find all categories', async () => {
@@ -71,7 +73,7 @@ describe('CategorySequelizeRepository Integration specs', () => {
     await repository.insert(category);
     const model = await CategoryModel.findByPk(category.categoryId.id);
 
-    expect(model.toJSON()).toMatchObject({
+    expect(model?.toJSON()).toMatchObject({
       category_id: category.categoryId.id,
       name: category.name,
       description: category.description,
@@ -80,7 +82,7 @@ describe('CategorySequelizeRepository Integration specs', () => {
     });
   });
 
-  it('should bulk insert categories', async  () => {
+  it('should bulk insert categories', async () => {
     const categories = Category.fake().theCategories(3).build();
 
     await repository.bulkInsert(categories);
