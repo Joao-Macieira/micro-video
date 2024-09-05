@@ -1,20 +1,20 @@
-import { NotFoundError } from "../../../../../shared/domain/errors/not-found.error";
-import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
-import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
-import { Category } from "../../../../domain/category.entity";
-import { CategorySequelizeRepository } from "../../../../infra/db/sequelize/category-sequelize.repository";
-import { CategoryModel } from "../../../../infra/db/sequelize/category.model";
-import { UpdateCategoryuseCase } from "../update-category.use-case";
+import { NotFoundError } from '../../../../../shared/domain/errors/not-found.error';
+import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { Category } from '../../../../domain/category.entity';
+import { CategorySequelizeRepository } from '../../../../infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '../../../../infra/db/sequelize/category.model';
+import { UpdateCategoryUseCase } from '../update-category.use-case';
 
 describe('UpdateCategoryUseCase Integration Tests', () => {
-  let useCase: UpdateCategoryuseCase;
+  let useCase: UpdateCategoryUseCase;
   let repository: CategorySequelizeRepository;
 
   setupSequelize({ models: [CategoryModel] });
 
   beforeEach(() => {
     repository = new CategorySequelizeRepository(CategoryModel);
-    useCase = new UpdateCategoryuseCase(repository);
+    useCase = new UpdateCategoryUseCase(repository);
   });
 
   it('should throws error when entity not found', async () => {
@@ -148,9 +148,7 @@ describe('UpdateCategoryUseCase Integration Tests', () => {
         ...('description' in i.input && { description: i.input.description }),
         ...('isActive' in i.input && { isActive: i.input.isActive }),
       });
-      const entityUpdated = await repository.findById(
-        new Uuid(i.input.id),
-      );
+      const entityUpdated = await repository.findById(new Uuid(i.input.id));
       expect(output).toStrictEqual({
         id: entity.categoryId.id,
         name: i.expected.name,

@@ -10,7 +10,7 @@ import {
 } from '../common/category-output';
 import { UpdateCategoryInput } from './update-category.input';
 
-export class UpdateCategoryuseCase
+export class UpdateCategoryUseCase
   implements IUseCase<UpdateCategoryInput, CategoryOutput>
 {
   constructor(private readonly categoryRepository: ICategoryRepository) {}

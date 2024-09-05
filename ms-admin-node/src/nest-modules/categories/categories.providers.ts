@@ -4,7 +4,7 @@ import { CreateCategoryUseCase } from '@core/category/application/use-cases/crea
 import { DeleteCategoryUseCase } from '@core/category/application/use-cases/delete-category/delete-category.use-case';
 import { GetCategoryUseCase } from '@core/category/application/use-cases/get-category/get-category.use-case';
 import { ListCategoriesUseCase } from '@core/category/application/use-cases/list-category/list-categories.use-case';
-import { UpdateCategoryuseCase } from '@core/category/application/use-cases/update-category/update-category.use-case';
+import { UpdateCategoryUseCase } from '@core/category/application/use-cases/update-category/update-category.use-case';
 import { ICategoryRepository } from '@core/category/domain/category.repository';
 import { CategoryInMemoryRepository } from '@core/category/infra/db/in-memory/category-in-memory.repository';
 import { CategorySequelizeRepository } from '@core/category/infra/db/sequelize/category-sequelize.repository';
@@ -37,9 +37,9 @@ export const USE_CASES = {
     inject: [REPOSITORIES.CATEGORY_REPOSITORY.provide],
   },
   UPDATE_CATEGORY_USE_CASE: {
-    provide: UpdateCategoryuseCase,
+    provide: UpdateCategoryUseCase,
     useFactory: (categoryRepo: ICategoryRepository) => {
-      return new UpdateCategoryuseCase(categoryRepo);
+      return new UpdateCategoryUseCase(categoryRepo);
     },
     inject: [REPOSITORIES.CATEGORY_REPOSITORY.provide],
   },

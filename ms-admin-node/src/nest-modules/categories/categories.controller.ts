@@ -4,6 +4,8 @@ import {
   Delete,
   Get,
   Inject,
+  Param,
+  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -13,17 +15,18 @@ import { CreateCategoryUseCase } from '@core/category/application/use-cases/crea
 import { DeleteCategoryUseCase } from '@core/category/application/use-cases/delete-category/delete-category.use-case';
 import { GetCategoryUseCase } from '@core/category/application/use-cases/get-category/get-category.use-case';
 import { ListCategoriesUseCase } from '@core/category/application/use-cases/list-category/list-categories.use-case';
-import { UpdateCategoryuseCase } from '@core/category/application/use-cases/update-category/update-category.use-case';
+import { UpdateCategoryUseCase } from '@core/category/application/use-cases/update-category/update-category.use-case';
 import { CategoryPresenter } from './categories.presenter';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
   @Inject(CreateCategoryUseCase)
   private readonly createCategoryUseCase: CreateCategoryUseCase;
 
-  @Inject(UpdateCategoryuseCase)
-  private readonly updateCategoryUseCase: UpdateCategoryuseCase;
+  @Inject(UpdateCategoryUseCase)
+  private readonly updateCategoryUseCase: UpdateCategoryUseCase;
 
   @Inject(DeleteCategoryUseCase)
   private readonly deleteCategoryUseCase: DeleteCategoryUseCase;
@@ -47,7 +50,16 @@ export class CategoriesController {
   findOne() {}
 
   @Patch(':id')
-  update() {}
+  async update(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ) {
+    const output = await this.updateCategoryUseCase.execute({
+      id,
+      ...updateCategoryDto,
+    });
+    return CategoriesController.serialize(output);
+  }
 
   @Delete(':id')
   remove() {}
