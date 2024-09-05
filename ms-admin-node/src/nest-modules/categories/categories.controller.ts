@@ -47,7 +47,12 @@ export class CategoriesController {
   findAll() {}
 
   @Get(':id')
-  findOne() {}
+  async findOne(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
+  ) {
+    const output = await this.getCategoryUseCase.execute({ id });
+    return CategoriesController.serialize(output);
+  }
 
   @Patch(':id')
   async update(
@@ -62,7 +67,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  remove(
+  async remove(
     @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
   ) {
     return this.deleteCategoryUseCase.execute({ id });
