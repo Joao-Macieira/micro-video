@@ -10,6 +10,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 import { CategoryOutput } from '@core/category/application/use-cases/common/category-output';
@@ -18,8 +19,12 @@ import { DeleteCategoryUseCase } from '@core/category/application/use-cases/dele
 import { GetCategoryUseCase } from '@core/category/application/use-cases/get-category/get-category.use-case';
 import { ListCategoriesUseCase } from '@core/category/application/use-cases/list-category/list-categories.use-case';
 import { UpdateCategoryUseCase } from '@core/category/application/use-cases/update-category/update-category.use-case';
-import { CategoryPresenter } from './categories.presenter';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from './categories.presenter';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { SearchCategoriesDto } from './dto/search-categories.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
@@ -46,7 +51,10 @@ export class CategoriesController {
   }
 
   @Get()
-  findAll() {}
+  async search(@Query() searchParams: SearchCategoriesDto) {
+    const output = await this.listCategoryUseCase.execute(searchParams);
+    return new CategoryCollectionPresenter(output);
+  }
 
   @Get(':id')
   async findOne(
