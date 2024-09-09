@@ -1,14 +1,16 @@
-import { IUseCase } from "../../../../shared/application/use-case.interface";
-import { Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
-import { ICategoryRepository } from "../../../domain/category.repository";
+import { IUseCase } from '../../../../shared/application/use-case.interface';
+import { Uuid } from '../../../../shared/domain/value-objects/uuid.vo';
+import { ICategoryRepository } from '../../../domain/category.repository';
 
 type DeleteCategoryInput = {
   id: string;
-}
+};
 
 type DeleteCategoryOutput = void;
 
-export class DeleteCategoryUseCase implements IUseCase<DeleteCategoryInput, DeleteCategoryOutput> {
+export class DeleteCategoryUseCase
+  implements IUseCase<DeleteCategoryInput, DeleteCategoryOutput>
+{
   constructor(private readonly categoryRepository: ICategoryRepository) {}
 
   async execute(input: DeleteCategoryInput): Promise<void> {
